@@ -1,0 +1,110 @@
+name: pytest linux
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "15 7 * * *"
+
+env:
+  PYTHONPATH: ${{ github.workspace }}/src
+  SENZING_TOOLS_DATABASE_URL: sqlite3://na:na@nowhere/tmp/sqlite/G2C.db
+
+permissions:
+  contents: read
+
+jobs:
+  pytest-linux:
+    name: "pytest with Senzing: ${{ matrix.senzingsdk-version }}; OS: ${{ matrix.os }}; Python ${{ matrix.python-version }}"
+    outputs:
+      status: ${{ job.status }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        senzingsdk-version: [staging-v4]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m venv ./venv
+          source ./venv/bin/activate
+          echo "PATH=${PATH}" >> "${GITHUB_ENV}"
+          python -m pip install --upgrade pip
+          python -m pip install --requirement development-requirements.txt
+          python -m pip install --requirement requirements.txt
+
+      - if: matrix.python-version == '3.9' || matrix.python-version == '3.10'
+        name: Install python libraries for python 3.9 and 3.10
+        run: |
+          source ./venv/bin/activate
+          python -m pip install typing_extensions
+
+      - name: Install Senzing SDK
+        uses: senzing-factory/github-action-install-senzing-sdk@v3
+        with:
+          senzingsdk-repository-package: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_PACKAGE }}
+          senzingsdk-repository-path: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_URL }}
+
+      - name: Set environment variables
+        run: |
+          SENZING_PATH="/opt/senzing"
+          {
+            echo "SENZING_PATH=${SENZING_PATH}"
+            echo "LD_LIBRARY_PATH=${SENZING_PATH}/er/lib"
+          } >> "$GITHUB_ENV"
+
+      - name: Copy /etc files
+        run: |
+          sudo mkdir -p /etc/opt/senzing
+          sudo cp testdata/senzing-license/g2.lic /etc/opt/senzing/g2.lic
+
+      - name: Copy test database files
+        run: |
+          mkdir -p /tmp/sqlite
+          cp testdata/sqlite/G2C.db /tmp/sqlite/
+
+      - name: Run pytest
+        run: |
+          source ./venv/bin/activate
+          pytest tests/ --verbose --capture=no --cov=src --cov-append
+
+      - name: Rename coverage file
+        env:
+          COVERAGE_FILE: "coverage.${{ matrix.python-version }}"
+        run: |
+          mv .coverage "$COVERAGE_FILE"
+
+      - name: Store coverage file
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.python-version }}
+          path: coverage.${{ matrix.python-version }}
+
+  coverage:
+    name: Coverage
+    needs: pytest-linux
+    permissions:
+      pull-requests: write
+      contents: write
+    uses: senzing-factory/build-resources/.github/workflows/python-coverage-comment.yaml@v2
+
+  slack-notification:
+    needs: [pytest-linux]
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.pytest-linux.outputs.status ) && (github.ref_name == github.event.repository.default_branch || github.event_name == 'schedule') }}
+    secrets:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    with:
+      job-status: ${{ needs.pytest-linux.outputs.status }}
