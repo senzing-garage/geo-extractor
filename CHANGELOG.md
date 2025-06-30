@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
-- Thing 6
 - Thing 5
 
 ## [1.0.1] - yyyy-mm-dd
