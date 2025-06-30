@@ -34,7 +34,7 @@ import time
 from types import FrameType, TracebackType
 from typing import Any, Callable, Collection, Dict, List
 
-from geo_extractor import example
+from geo_extractor import geo_extractor
 
 # Import from https://pypi.org/
 
@@ -509,8 +509,8 @@ def do_task1(subcommand: str, args: argparse.Namespace) -> None:
 
     # Do work.
 
-    example.example_function()
-    print(example.example_return_int(5))
+    geo_extractor.example_function()
+    print(geo_extractor.example_return_int(5))
 
     print("senzing-dir: {senzing_dir}; debug: {debug}".format(**config))
 
