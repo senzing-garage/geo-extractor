@@ -166,7 +166,8 @@
     "viewcode",
     "virtualenv",
     "WATCHLIST",
-    "XLITERATOR"
+    "XLITERATOR",
+    "zizmor"
   ],
   "ignorePaths": [
     ".git/**",
