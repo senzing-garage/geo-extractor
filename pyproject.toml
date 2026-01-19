@@ -1,9 +1,25 @@
+[project]
+name = "geo-extractor"
+version = "0.0.1"
+description = "Extract geographically-located records from Senzing JSONL files"
+authors = [{ name = "senzing", email = "support@senzing.com" }]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "openpyxl",
+    "orjson",
+]
+license = "Apache-2.0"
+
 [build-system]
 requires = [
     "setuptools>=42",
     "wheel"
 ]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [dependency-groups]
 test = ["pytest", "coverage"]
