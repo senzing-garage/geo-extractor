@@ -1,4 +1,5 @@
 """Parse Senzing JSON records into normalized attribute lists."""
+
 from operator import itemgetter
 
 import orjson
@@ -12,7 +13,7 @@ class json2attribute:  # pylint: disable=invalid-name
         self.feature_lookup = {}
         self.attr_groups = {}
         self.attr_list = []
-        with open(cfg_file, encoding='utf-8') as f:
+        with open(cfg_file, encoding="utf-8") as f:
             cfg_data = orjson.loads(f.read())
         for record in cfg_data["G2_CONFIG"]["CFG_ATTR"]:
             self.attr_lookup[record["ATTR_CODE"]] = record
