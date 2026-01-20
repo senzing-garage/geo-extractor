@@ -50,10 +50,14 @@ ignore_missing_imports = "true"
 [tool.pylint]
 ignored-argument-names = "args|kwargs"
 disable = [
+    "arguments-differ",
     "broad-except",
     "consider-using-f-string",
+    "import-error",
     "import-self",
+    "invalid-name",
     "line-too-long",
+    "redefined-outer-name",
     "too-many-branches",
     "too-many-locals"
 ]

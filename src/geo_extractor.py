@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Extract geographically-located records from Senzing JSONL files."""
 import argparse
 import json
 import os
@@ -43,13 +44,14 @@ for k in GEOS:
     GEOS[k]["states_pad"] = [f" {s} " for s in GEOS[k]["states"]]
     GEOS[k]["cities_pad"] = [f" {c} " for c in GEOS[k]["cities"]]
 
-CONFIGURED_GEOS = [k for k in GEOS]
+CONFIGURED_GEOS = list(GEOS)
 CHOICES_GEOS = CONFIGURED_GEOS.copy()
 CHOICES_GEOS.append("all")
 VALID_RECORD_TYPES = ("PERSON", "ORGANIZATION")
 
 
 def pure_config(geo, addr_data):
+    """Match address against geo config using explicit city/state/postal_code values."""
     any_city = len(GEOS[geo].get("cities", [])) == 0
     any_state = len(GEOS[geo].get("states", [])) == 0
     any_postal = len(GEOS[geo].get("postal_codes", [])) == 0
@@ -79,6 +81,7 @@ def city_or_country(geo, addr_data):
 
 
 def confirm_country(target_geo, addr_data):
+    """Verify address country matches the target geo's configured countries."""
     if addr_data["ADDR_COUNTRY"]:
         in_country = any(addr_data["ADDR_COUNTRY"] == c for c in GEOS[target_geo]["countries"])
     elif addr_data["HAS_ADDR_FULL"]:
@@ -201,7 +204,7 @@ for source_code, source_file in source_files.items():
                     elif attr_data["ATTRIBUTE"] == "ADDRESS":
                         addr_data = attr_data.get("ATTR_JSON")
                         addr_data["ADDR_FULL"] = f' {addr_data.get("ADDR_FULL", "").replace(",", " ").lower()} '
-                        addr_data["HAS_ADDR_FULL"] = True if addr_data["ADDR_FULL"].strip() else False
+                        addr_data["HAS_ADDR_FULL"] = bool(addr_data["ADDR_FULL"].strip())
                         addr_data["ADDR_CITY"] = addr_data.get("ADDR_CITY", "").lower().strip()
                         addr_data["ADDR_STATE"] = addr_data.get("ADDR_STATE", "").lower().strip()
                         addr_data["ADDR_POSTAL_CODE"] = addr_data.get("ADDR_POSTAL_CODE", "").lower().strip()

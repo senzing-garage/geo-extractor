@@ -1,3 +1,4 @@
+"""Collect feature statistics from JSONL files and update Excel spreadsheet."""
 import os
 import sys
 import glob
@@ -83,14 +84,14 @@ for file_name in file_list:
             row_idx += 1
             ws.insert_rows(idx=row_idx, amount=1)
             row = ws[row_idx]
-            for i in range(len(last_row)):
-                if last_row[i].has_style:
-                    row[i].font = copy(last_row[i].font)
-                    row[i].border = copy(last_row[i].border)
-                    row[i].fill = copy(last_row[i].fill)
-                    row[i].number_format = copy(last_row[i].number_format)
-                    row[i].protection = copy(last_row[i].protection)
-                    row[i].alignment = copy(last_row[i].alignment)
+            for i, last_cell in enumerate(last_row):
+                if last_cell.has_style:
+                    row[i].font = copy(last_cell.font)
+                    row[i].border = copy(last_cell.border)
+                    row[i].fill = copy(last_cell.fill)
+                    row[i].number_format = copy(last_cell.number_format)
+                    row[i].protection = copy(last_cell.protection)
+                    row[i].alignment = copy(last_cell.alignment)
                 row[i].value = 0
         else:
             row = ws[row_idx]

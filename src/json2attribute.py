@@ -1,29 +1,27 @@
+"""Parse Senzing JSON records into normalized attribute lists."""
 from operator import itemgetter
 
 import orjson
 
 
-class json2attribute:
+class json2attribute:  # pylint: disable=invalid-name
+    """Parser that converts JSON records to attribute lists using Senzing config."""
 
     def __init__(self, cfg_file):
-        try:
-            with open(cfg_file, encoding='utf-8') as f:
-                cfg_data = orjson.loads(f.read())
-            self.attr_lookup = {}
-            for record in cfg_data["G2_CONFIG"]["CFG_ATTR"]:
-                self.attr_lookup[record["ATTR_CODE"]] = record
-            self.feature_lookup = {}
-            for record in cfg_data["G2_CONFIG"]["CFG_FTYPE"]:
-                self.feature_lookup[record["FTYPE_CODE"]] = record
-        except Exception as ex:
-            raise Exception(ex)
+        self.attr_lookup = {}
+        self.feature_lookup = {}
+        self.attr_groups = {}
+        self.attr_list = []
+        with open(cfg_file, encoding='utf-8') as f:
+            cfg_data = orjson.loads(f.read())
+        for record in cfg_data["G2_CONFIG"]["CFG_ATTR"]:
+            self.attr_lookup[record["ATTR_CODE"]] = record
+        for record in cfg_data["G2_CONFIG"]["CFG_FTYPE"]:
+            self.feature_lookup[record["FTYPE_CODE"]] = record
 
     def parse(self, json_string, rtn_value="attr_list"):
-        try:
-            json_data = orjson.loads(json_string)
-        except Exception as ex:
-            raise Exception(ex)
-
+        """Parse JSON string and return attribute list or groups."""
+        json_data = orjson.loads(json_string)
         self.attr_groups = {}
         for attribute in (x for x in json_data if json_data[x]):
             if isinstance(json_data[attribute], list):
@@ -43,15 +41,14 @@ class json2attribute:
             return self.attr_groups
 
         self.attr_list = []
-        for segment_id in self.attr_groups:
+        for segment_id, group_data in self.attr_groups.items():
             segment, attribute, usage_type = segment_id.split("|")
             min_attr_id = 9999
             attr_values = []
             attr_json = {}
             used_from_date = used_thru_date = None
-            for attr_data in sorted(self.attr_groups[segment_id], key=itemgetter("ATTR_ID")):
-                if attr_data.get("ATTR_ID") < min_attr_id:
-                    min_attr_id = attr_data.get("ATTR_ID")
+            for attr_data in sorted(group_data, key=itemgetter("ATTR_ID")):
+                min_attr_id = min(min_attr_id, attr_data.get("ATTR_ID"))
                 if attr_data.get("FELEM_CODE") == "USAGE_TYPE":
                     usage_type = attr_data["ATTR_VALUE"]
                 elif attr_data.get("FELEM_CODE") == "USED_FROM_DT":
@@ -79,6 +76,7 @@ class json2attribute:
         return self.attr_list
 
     def lookup_attribute(self, attr_name, attr_value):
+        """Look up attribute definition from config and return attribute data dict."""
         attr_data = {"ATTR_ID": 9999, "ATTR_CODE": attr_name, "ATTR_CLASS": "PAYLOAD"}
         if attr_name in self.attr_lookup:
             attr_data = self.attr_lookup[attr_name].copy()
@@ -98,6 +96,7 @@ class json2attribute:
         return attr_data
 
     def update_grouping(self, segment_id, attr_data):
+        """Add attribute data to the appropriate segment group."""
         if attr_data.get("FTYPE_CODE"):
             attribute = attr_data.get("FTYPE_CODE")
         else:
