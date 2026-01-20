@@ -9,10 +9,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "Operating System :: OS Independent",
 ]
-dependencies = [
-    "openpyxl",
-    "orjson",
-]
+dependencies = ["openpyxl", "orjson"]
 license = "Apache-2.0"
 license-files = [
   "LICENSE",
@@ -20,19 +17,13 @@ license-files = [
   ".github/senzing-individual-contributor-license-agreement.pdf",
 ]
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
-]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project.urls]
 bugtracker = "https://github.com/senzing-garage/geo-extractor/issues"
 changelog = "https://github.com/senzing-garage/geo-extractor/blob/main/CHANGELOG.md"
 source = "https://github.com/senzing-garage/geo-extractor"
-
-[build-system]
-requires = ["setuptools>=80", "wheel"]
-build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -128,24 +119,17 @@ ignore_missing_imports = true
 [tool.pylint]
 ignored-argument-names = "args|kwargs"
 disable = [
-    "arguments-differ",
-    "broad-except",
-    "consider-using-f-string",
-    "import-error",
-    "import-self",
-    "invalid-name",
-    "line-too-long",
-    "redefined-outer-name",
-    "too-many-branches",
-    "too-many-locals"
+  "arguments-differ",
+  "broad-except",
+  "consider-using-f-string",
+  "import-error",
+  "import-self",
+  "invalid-name",
+  "line-too-long",
+  "redefined-outer-name",
+  "too-many-branches",
+  "too-many-locals",
 ]
-good-names = [
-    "geo-extractor"
-]
-ignore = [
-    "__init__.py",
-    "docs/source/conf.py"
-]
-notes = [
-    "FIXME"
-]
+good-names = ["geo-extractor"]
+ignore = ["__init__.py", "docs/source/conf.py"]
+notes = ["FIXME"]
