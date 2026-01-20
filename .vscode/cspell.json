@@ -11,6 +11,7 @@
     "automodule",
     "autosectionlabel",
     "Blacklick",
+    "bugtracker",
     "BUILDKIT",
     "BUILDOUT",
     "buildx",
@@ -24,6 +25,7 @@
     "CODEOWNER",
     "CONFIGCHKSUM",
     "configmanager",
+    "cooldown",
     "CSTAB",
     "devhelp",
     "DEXCL",
@@ -49,6 +51,7 @@
     "ERFRAG",
     "errorlevel",
     "ERRULE",
+    "esbenp",
     "ETYPE",
     "FBOM",
     "FBOVR",
@@ -163,7 +166,8 @@
     "viewcode",
     "virtualenv",
     "WATCHLIST",
-    "XLITERATOR"
+    "XLITERATOR",
+    "zizmor"
   ],
   "ignorePaths": [
     ".git/**",
@@ -173,6 +177,6 @@
     ".pytest_cache/**",
     ".venv/**",
     "**/__pycache__/**",
-    "development-requirements.txt",
+    "development-requirements.txt"
   ]
 }

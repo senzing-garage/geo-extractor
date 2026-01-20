@@ -72,5 +72,6 @@ Both functions check `ADDR_FULL` (single-line address) or individual address com
 ## Code Style
 
 - Line length: 120 characters
-- Black formatting with isort profile
+- Black for formatting with isort profile
 - Type hints expected (mypy enforced)
+- Follow existing pylint configuration in pyproject.toml
