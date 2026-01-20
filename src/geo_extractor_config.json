@@ -2,17 +2,33 @@
     "output_path": "../output",
     "source_files":
     {
-        "icij": "sources/icij-20220503.json",
-        "npi": "sources/npi_providers-20241208.json",
-        "open_ownership": "sources/open_ownership-20250415.json",
-        "open_sanctions": "sources/open_sanctions-20250415.json",
-        "gleif": "sources/os-gleif-20250415.json",
-        "ofac": "sources/sdn-20241211.json",
-        "dowjones_trifecta": "sources/djtri-20250209.json",
+        "icij": "../sources/icij-20220503.json",
+        "npi": "../sources/npi_providers-20241208.json",
+        "open_ownership": "../sources/open_ownership-20250415.json",
+        "open_sanctions": "../sources/open_sanctions-20250415.json",
+        "gleif": "../sources/os-gleif-20250415.json",
+        "ofac": "../sources/sdn-20241211.json",
+        "dowjones_trifecta": "../sources/djtri-20250209.json",
         "foursquare": "/etl/senzing/projects/fsq/data/fsq_data_all.jsonl"
     },
     "target_geos":
     {
+        "china":
+        {
+            "countries":
+            [
+                "china",
+                "chn",
+                "cn"
+            ],
+            "states":
+            [],
+            "cities":
+            [
+                "china"
+            ],
+            "function": "city_or_country"
+        },
         "iran":
         {
             "countries":

@@ -228,9 +228,9 @@ for source_code, source_file in source_files.items():
                             target_geo, addr_data
                         )
                         if cli_args.debug:
-                            print(
-                                f"testing addr {addr_cnt} for {target_geo.upper()} with {GEOS[target_geo]["function"]}() {'PASSED'if passed else 'FAILED'}"
-                            )
+                            func_name = GEOS[target_geo]["function"]
+                            result = "PASSED" if passed else "FAILED"
+                            print(f"testing addr {addr_cnt} for {target_geo.upper()} with {func_name}() {result}")
                         if passed:
                             target_stats[source_code][target_geo]["target_cnt"] += 1
                             target_stats[source_code][target_geo]["target_lines"].append(line)
