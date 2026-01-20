@@ -7,7 +7,7 @@ class json2attribute:
 
     def __init__(self, cfg_file):
         try:
-            with open(cfg_file) as f:
+            with open(cfg_file, encoding='utf-8') as f:
                 cfg_data = orjson.loads(f.read())
             self.attr_lookup = {}
             for record in cfg_data["G2_CONFIG"]["CFG_ATTR"]:

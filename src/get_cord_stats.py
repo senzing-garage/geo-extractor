@@ -1,13 +1,10 @@
 import os
 import sys
-import json
-import csv
 import glob
-
+from copy import copy
 from datetime import datetime
 
 from openpyxl import load_workbook
-from copy import copy
 
 from json2attribute import json2attribute
 json_parser = json2attribute('sz_default_config.json')
@@ -46,7 +43,7 @@ stat_pack = {}
 any_updates = False
 
 for file_name in file_list:
-    with open(file_name,'r') as f:
+    with open(file_name, 'r', encoding='utf-8') as f:
         source, geo = os.path.basename(file_name).replace('.jsonl', '').split('-')
         column_values = {
             'SOURCE': source,
