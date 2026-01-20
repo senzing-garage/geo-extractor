@@ -248,7 +248,7 @@ for source_code, source_file in source_files.items():
 
     except KeyboardInterrupt:
         proc_status = "Interrupted"
-        print("Keboard interrupt!")
+        print("Keyboard interrupt!")
         break
     except OSError as err:  # Exception as err:
         proc_status = "Errored out!"
