@@ -39,6 +39,7 @@
     "djtri",
     "Dockerfiles",
     "DOCKERHUB",
+    "docktermj",
     "docstrings",
     "dowjones",
     "DRLIC",
@@ -192,7 +193,7 @@
     "ZOOMROOM",
     "москва",
     "московская",
-    "область",
+    "область"
   ],
   "ignorePaths": [
     ".git/**",
