@@ -30,35 +30,35 @@ The configuration file defines source files and target geographic regions:
 
 ```json
 {
-    "output_path": "../output",
-    "source_files": {
-        "icij": "../sources/icij-20220503.json",
-        "open_sanctions": "../sources/open_sanctions-20250415.json"
+  "output_path": "../output",
+  "source_files": {
+    "icij": "../sources/icij-20220503.json",
+    "open_sanctions": "../sources/open_sanctions-20250415.json"
+  },
+  "target_geos": {
+    "lasvegas": {
+      "countries": ["us", "usa", "united states"],
+      "states": ["nv", "nevada", "us-nv"],
+      "cities": ["las vegas"],
+      "function": "pure_config"
     },
-    "target_geos": {
-        "lasvegas": {
-            "countries": ["us", "usa", "united states"],
-            "states": ["nv", "nevada", "us-nv"],
-            "cities": ["las vegas"],
-            "function": "pure_config"
-        },
-        "singapore": {
-            "countries": ["sg", "singapore"],
-            "states": [],
-            "cities": ["singapore"],
-            "function": "city_or_country"
-        }
+    "singapore": {
+      "countries": ["sg", "singapore"],
+      "states": [],
+      "cities": ["singapore"],
+      "function": "city_or_country"
     }
+  }
 }
 ```
 
 #### Configuration Fields
 
-| Field | Description |
-|-------|-------------|
-| `output_path` | Directory where extracted JSONL files are written |
-| `source_files` | Map of source code names to JSONL file paths |
-| `target_geos` | Map of geo names to matching criteria |
+| Field          | Description                                       |
+| -------------- | ------------------------------------------------- |
+| `output_path`  | Directory where extracted JSONL files are written |
+| `source_files` | Map of source code names to JSONL file paths      |
+| `target_geos`  | Map of geo names to matching criteria             |
 
 #### Geo Matching Functions
 
@@ -104,6 +104,7 @@ python3 get_cord_stats.py "../output/icij-*.jsonl"
 ```
 
 The script:
+
 1. Reads each JSONL file (expects `SOURCE-GEO.jsonl` naming format)
 2. Counts records and features by type
 3. Updates or inserts rows in `_CORD_STATS.xlsx` (must exist in the target directory)
@@ -114,15 +115,15 @@ The script:
 
 The `_CORD_STATS.xlsx` file tracks extraction results with these columns:
 
-| Column | Description |
-|--------|-------------|
-| LAST_UPDATED | Timestamp of last update |
-| SOURCE | Source code (e.g., icij, open_sanctions) |
-| GEO | Geographic region (e.g., malta, iran) |
-| RECORD_COUNT | Total records extracted |
-| PERSON_COUNT | Records with RECORD_TYPE=PERSON |
-| ORGANIZATION_COUNT | Records with RECORD_TYPE=ORGANIZATION |
-| *_FEATURES | Count of each feature type (NAME, ADDRESS, PHONE, etc.) |
+| Column             | Description                                             |
+| ------------------ | ------------------------------------------------------- |
+| LAST_UPDATED       | Timestamp of last update                                |
+| SOURCE             | Source code (e.g., icij, open_sanctions)                |
+| GEO                | Geographic region (e.g., malta, iran)                   |
+| RECORD_COUNT       | Total records extracted                                 |
+| PERSON_COUNT       | Records with RECORD_TYPE=PERSON                         |
+| ORGANIZATION_COUNT | Records with RECORD_TYPE=ORGANIZATION                   |
+| \*\_FEATURES       | Count of each feature type (NAME, ADDRESS, PHONE, etc.) |
 
 A sample template is provided at `samples/_CORD_STATS.xlsx`.
 
@@ -144,7 +145,7 @@ python3 get_cord_stats.py ../output
 
 ## File Structure
 
-```
+```console
 geo-extractor/
 ├── src/
 │   ├── geo_extractor.py           # Main extraction script
