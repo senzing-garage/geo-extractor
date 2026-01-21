@@ -102,7 +102,10 @@ max-line-length = 120
 
 [tool.isort]
 profile = "black"
-src_paths = ["examples", "src", "tests"]
+src_paths = ["src", "tests"]
+
+[tool.mypy]
+disable_error_code = ["import-untyped"]
 
 [[tool.mypy.overrides]]
 module = "senzing_abstract.szengineflags.*"
@@ -113,7 +116,12 @@ warn_unused_ignores = false
 module = "pytest_schema.*"
 ignore_missing_imports = true
 
+[[tool.mypy.overrides]]
+module = "openpyxl.*"
+ignore_missing_imports = true
+
 [tool.pylint]
+extension-pkg-allow-list = ["orjson"]
 ignored-argument-names = "args|kwargs"
 disable = [
   "arguments-differ",

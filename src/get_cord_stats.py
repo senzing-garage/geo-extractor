@@ -1,10 +1,11 @@
 """Collect feature statistics from JSONL files and update Excel spreadsheet."""
 
+import glob
 import os
 import sys
-import glob
 from copy import copy
 from datetime import datetime
+from typing import Any
 
 from openpyxl import load_workbook
 
@@ -39,16 +40,16 @@ wb = load_workbook(stats_file)
 ws = wb.worksheets[0]
 column_header = list(next(ws.values))
 
-record_types = []
-features = []
-stat_pack = {}
+record_types: list[str] = []
+features: list[str] = []
+stat_pack: dict[str, Any] = {}
 
 any_updates = False
 
 for file_name in file_list:
     with open(file_name, "r", encoding="utf-8") as f:
         source, geo = os.path.basename(file_name).replace(".jsonl", "").split("-")
-        column_values = {"SOURCE": source, "GEO": geo, "RECORD_COUNT": 0}
+        column_values: dict[str, Any] = {"SOURCE": source, "GEO": geo, "RECORD_COUNT": 0}
         for line in f:
             attr_list = json_parser.parse(line)
             for attr_data in attr_list:

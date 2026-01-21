@@ -102,7 +102,7 @@ class json2attribute:  # pylint: disable=invalid-name
             attribute = attr_data.get("FTYPE_CODE")
         else:
             attribute = attr_data.get("ATTR_CODE")
-        segment_id += f"|{attribute}|{attr_data.get('USAGE_TYPE','')}"
+        segment_id += f"|{attribute}|{attr_data.get('USAGE_TYPE', '')}"
         if segment_id not in self.attr_groups:
             self.attr_groups[segment_id] = [attr_data]
         else:

@@ -6,6 +6,7 @@ import os
 import re
 import sys
 import time
+from typing import Any
 
 from json2attribute import json2attribute
 
@@ -22,8 +23,8 @@ class JSONWithComments(json.JSONDecoder):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def decode(self, json_string: str):
-        regex = r"""("(?:\\"|[^"])*?")|(\/\*(?:.|\s)*?\*\/|\/\/.*)"""
+    def decode(self, json_string: str):  # type: ignore[override]
+        regex = r"""("(?:\\"|[^"])*?")|(\/\*[\s\S]*?\*\/|\/\/.*)"""
         json_string = re.sub(regex, r"\1", json_string)
         return super().decode(json_string)
 
@@ -132,8 +133,8 @@ target_geos = cli_args.target_geos
 if len(cli_args.target_geos) == 1 and "all" in cli_args.target_geos:
     target_geos = CONFIGURED_GEOS
 MAX_GEO_LEN = len(max(target_geos, key=len))
-target_stats = {}
-invalid_country_log = {}
+target_stats: dict[str, dict[str, Any]] = {}
+invalid_country_log: dict[str, dict[str, int]] = {}
 
 if source_file.lower() != "all":
     if source_file not in source_files:
