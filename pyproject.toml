@@ -1,7 +1,7 @@
 [project]
 name = "geo-extractor"
 version = "0.0.1"
-description = "geo-extractor"
+description = "Extract geographically-located records from Senzing JSONL files"
 authors = [{ name = "senzing", email = "support@senzing.com" }]
 readme = "README.md"
 requires-python = ">=3.10"
@@ -9,22 +9,24 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "Operating System :: OS Independent",
 ]
-dependencies = ["less==0.0.1"]
+dependencies = ["openpyxl", "orjson"]
 license = "Apache-2.0"
 license-files = [
   "LICENSE",
   ".github/senzing-corporate-contributor-license-agreement.pdf",
   ".github/senzing-individual-contributor-license-agreement.pdf",
 ]
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project.urls]
 bugtracker = "https://github.com/senzing-garage/geo-extractor/issues"
 changelog = "https://github.com/senzing-garage/geo-extractor/blob/main/CHANGELOG.md"
 source = "https://github.com/senzing-garage/geo-extractor"
 
-[build-system]
-requires = ["setuptools>=80", "wheel"]
-build-backend = "setuptools.build_meta"
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [dependency-groups]
 all = [
@@ -88,9 +90,6 @@ test = [
   "coverage==7.13.1; python_version > '3.11'",
 ]
 
-[tool.setuptools.packages.find]
-where = ["src"]
-
 [tool.bandit]
 skips = ["B101"]
 
@@ -103,7 +102,10 @@ max-line-length = 120
 
 [tool.isort]
 profile = "black"
-src_paths = ["examples", "src", "tests"]
+src_paths = ["src", "tests"]
+
+[tool.mypy]
+disable_error_code = ["import-untyped"]
 
 [[tool.mypy.overrides]]
 module = "senzing_abstract.szengineflags.*"
@@ -114,13 +116,22 @@ warn_unused_ignores = false
 module = "pytest_schema.*"
 ignore_missing_imports = true
 
+[[tool.mypy.overrides]]
+module = "openpyxl.*"
+ignore_missing_imports = true
+
 [tool.pylint]
+extension-pkg-allow-list = ["orjson"]
 ignored-argument-names = "args|kwargs"
 disable = [
+  "arguments-differ",
   "broad-except",
   "consider-using-f-string",
+  "import-error",
   "import-self",
+  "invalid-name",
   "line-too-long",
+  "redefined-outer-name",
   "too-many-branches",
   "too-many-locals",
 ]

@@ -1,0 +1,103 @@
+{
+  "output_path": "../output",
+  "source_files": {
+    "icij": "../sources/icij-20220503.json",
+    "npi": "../sources/npi_providers-20241208.json",
+    "open_ownership": "../sources/open_ownership-20250415.json",
+    "open_sanctions": "../sources/open_sanctions-20250415.json",
+    "gleif": "../sources/os-gleif-20250415.json",
+    "ofac": "../sources/sdn-20241211.json",
+    "dowjones_trifecta": "../sources/djtri-20250209.json",
+    "foursquare": "/etl/senzing/projects/fsq/data/fsq_data_all.jsonl"
+  },
+  "target_geos": {
+    "china": {
+      "countries": ["china", "chn", "cn"],
+      "states": [],
+      "cities": ["china"],
+      "function": "city_or_country"
+    },
+    "iran": {
+      "countries": ["irn", "iran", "ir"],
+      "states": [],
+      "cities": ["iran"],
+      "function": "city_or_country"
+    },
+    "iraq": {
+      "countries": ["irq", "iraq", "iq"],
+      "states": [],
+      "cities": ["iraq"],
+      "function": "city_or_country"
+    },
+    "lasvegas": {
+      "countries": ["us", "usa", "united states"],
+      "states": ["nv", "nevada", "us-nv"],
+      "cities": ["las vegas"],
+      "function": "pure_config"
+    },
+    "london": {
+      "countries": ["uk", "gb", "england", "united kingdom", "britain"],
+      "states": [],
+      "cities": ["london"],
+      "function": "pure_config"
+    },
+    "london-central": {
+      "countries": ["uk", "gb", "england", "united kingdom", "britain"],
+      "states": [],
+      "cities": ["london"],
+      "postal_codes": ["w1"],
+      "inactive_postal_codes": ["wc1", "wc2", "ec1", "ec2", "ec3", "ec4"],
+      "function": "pure_config"
+    },
+    "malta": {
+      "countries": ["mlt", "mt", "malta"],
+      "states": [],
+      "cities": ["malta"],
+      "function": "city_or_country"
+    },
+    "moscow": {
+      "countries": ["ru", "russia"],
+      "states": [],
+      "cities": [
+        "moskovskaya oblast",
+        "moskovskaja oblast",
+        "московская область",
+        "moscow",
+        "moskva",
+        "москва"
+      ],
+      "inactive_cities": [],
+      "function": "pure_config"
+    },
+    "quebec": {
+      "countries": ["ca", "canada"],
+      "states": ["quebec"],
+      "cities": ["quebec"],
+      "function": "pure_config"
+    },
+    "toronto": {
+      "countries": ["ca", "can", "canada"],
+      "states": ["ontario"],
+      "cities": ["toronto"],
+      "function": "pure_config"
+    },
+    "ottawa": {
+      "countries": ["ca", "can", "canada"],
+      "states": ["ontario"],
+      "cities": ["ottawa"],
+      "function": "pure_config"
+    },
+    "singapore": {
+      "countries": ["sg", "singapore"],
+      "states": [],
+      "cities": ["singapore"],
+      "function": "city_or_country"
+    },
+    "washington": {
+      "countries": ["us", "usa", "united states"],
+      "states": ["wa", "washingtonm", "us-wa"],
+      "cities": [],
+      "function": "pure_config"
+    }
+  }
+}
