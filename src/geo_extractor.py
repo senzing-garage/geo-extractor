@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Extract geographically-located records from Senzing JSONL files."""
+
 import argparse
 import json
 import os
